@@ -223,6 +223,8 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 	private AnimatorListener animatorListener;
 
 	private MaterialMenuState materialMenuState;
+	
+	private boolean isDrawCircle = true;
 
 	public MaterialMenuDrawable(Context context, int color, Stroke stroke) {
 		this(context, color, stroke, DEFAULT_SCALE, DEFAULT_TRANSFORM_DURATION,
@@ -333,8 +335,10 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 
 	private void drawTouchCircle(Canvas canvas) {
 		canvas.restore();
-		canvas.drawCircle(width / 2, height / 2, pressedProgressValue,
-				circlePaint);
+		if (isDrawCircle) {
+			canvas.drawCircle(width / 2, height / 2, pressedProgressValue,
+					circlePaint);
+		}
 	}
 
 	/**
@@ -1537,5 +1541,13 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 	static float dpToPx(Resources resources, float dp) {
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
 				resources.getDisplayMetrics());
+	}
+	
+	public boolean isDrawCircle() {
+		return isDrawCircle;
+	}
+
+	public void setDrawCircle(boolean isDrawCircle) {
+		this.isDrawCircle = isDrawCircle;
 	}
 }

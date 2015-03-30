@@ -132,6 +132,14 @@ public class MaterialMenuView extends View implements MaterialMenu {
     public void setColor(int color) {
         drawable.setColor(color);
     }
+    
+    public void setDrawCircle(boolean isDrawCircle) {
+    	drawable.setDrawCircle(isDrawCircle);
+	}
+    
+    public void isDrawCircle(){
+    	drawable.isDrawCircle();
+    }
 
     @Override
     public void setTransformationDuration(int duration) {

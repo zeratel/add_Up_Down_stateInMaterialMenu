@@ -16,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
-		
         app:mm_color="#ffcc0000"
         app:mm_strokeWidth="1"
         app:mm_scale="5"

@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 		        materialMenuView = (MaterialMenuView)findViewById(R.id.material_menu_button);
 		        materialMenuView.setOnClickListener(this);
-		        materialMenuView.setState(IconState.ARROW);
+		        materialMenuView.setState(IconState.DOWN);
 		    }
 
 		    @Override public void onClick(View v) {
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 		    public static int generateState(int previous) {
 //		    	generated++;
-//		    	if (generated > 5) {
+//		    	if (generated > 6) {
 //		    		generated = 0;
 //				}
 		    	generated = new Random().nextInt(6);
@@ -64,17 +64,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		    public static IconState intToState(int state) {
 		        switch (state) {
 		            case 0:
-		                return IconState.BURGER;
+		            	return IconState.DOWN;
 		            case 1:
-		            	return IconState.ARROW;
+		            	return IconState.PLUS;
 		            case 2:
-		            	return IconState.X;
+		            	return IconState.ARROW;
 		            case 3:
 		            	return IconState.CHECK;
 		            case 4:
-		            	return IconState.UP;
+		            	return IconState.X;
 		            case 5:
-		            	return IconState.DOWN;
+		            	return IconState.UP;
+		            case 6:
+		            	return IconState.BURGER;
 		        }
 		        throw new IllegalArgumentException("Must be a number [0,5)");
 		    }

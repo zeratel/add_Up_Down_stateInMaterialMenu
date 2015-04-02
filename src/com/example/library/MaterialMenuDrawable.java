@@ -41,11 +41,16 @@ import static com.nineoldandroids.animation.Animator.AnimatorListener;
 public class MaterialMenuDrawable extends Drawable implements Animatable {
 
 	public enum IconState {
-		BURGER, ARROW, X, CHECK, UP, DOWN
+		BURGER, ARROW, X, CHECK, UP, DOWN, PLUS
 	}
 
 	public enum AnimationState {
-		BURGER_ARROW, BURGER_X, BURGER_CHECK, BURGER_UP, BURGER_DOWN, ARROW_X, ARROW_CHECK, ARROW_UP, ARROW_DOWN, X_CHECK, X_UP, X_DOWN, CHECK_UP, CHECK_DOWN, UP_DOWN;
+		BURGER_ARROW, BURGER_X, BURGER_CHECK, BURGER_UP, BURGER_DOWN, BURGER_PLUS,
+		ARROW_X, ARROW_CHECK, ARROW_UP, ARROW_DOWN, ARROW_PLUS,
+		X_CHECK, X_UP, X_DOWN, X_PLUS,
+		CHECK_UP, CHECK_DOWN, CHECK_PLUS,
+		UP_DOWN, UP_PLUS,
+		DOWN_PLUS;
 
 		public IconState getFirstState() {
 			switch (this) {
@@ -59,6 +64,8 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 				return IconState.BURGER;
 			case BURGER_DOWN:
 				return IconState.BURGER;
+			case BURGER_PLUS:
+				return IconState.BURGER;
 			case ARROW_X:
 				return IconState.ARROW;
 			case ARROW_CHECK:
@@ -67,18 +74,28 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 				return IconState.ARROW;
 			case ARROW_DOWN:
 				return IconState.ARROW;
+			case ARROW_PLUS:
+				return IconState.ARROW;
 			case X_CHECK:
 				return IconState.X;
 			case X_UP:
 				return IconState.X;
 			case X_DOWN:
 				return IconState.X;
+			case X_PLUS:
+				return IconState.X;
 			case CHECK_UP:
 				return IconState.CHECK;
 			case CHECK_DOWN:
 				return IconState.CHECK;
+			case CHECK_PLUS:
+				return IconState.CHECK;
 			case UP_DOWN:
 				return IconState.UP;
+			case UP_PLUS:
+				return IconState.UP;
+			case DOWN_PLUS:
+				return IconState.DOWN;
 			default:
 				return null;
 			}
@@ -96,6 +113,8 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 				return IconState.UP;
 			case BURGER_DOWN:
 				return IconState.DOWN;
+			case BURGER_PLUS:
+				return IconState.PLUS;
 			case ARROW_X:
 				return IconState.X;
 			case ARROW_UP:
@@ -104,18 +123,28 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 				return IconState.DOWN;
 			case ARROW_CHECK:
 				return IconState.CHECK;
+			case ARROW_PLUS:
+				return IconState.PLUS;
 			case X_CHECK:
 				return IconState.CHECK;
 			case X_UP:
 				return IconState.UP;
 			case X_DOWN:
 				return IconState.DOWN;
+			case X_PLUS:
+				return IconState.PLUS;
 			case CHECK_UP:
 				return IconState.UP;
 			case CHECK_DOWN:
 				return IconState.DOWN;
+			case CHECK_PLUS:
+				return IconState.PLUS;
 			case UP_DOWN:
 				return IconState.DOWN;
+			case UP_PLUS:
+				return IconState.PLUS;
+			case DOWN_PLUS:
+				return IconState.PLUS;
 			default:
 				return null;
 			}
@@ -176,6 +205,8 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 	private static final float CHECK_BOTTOM_ANGLE = -90;
 	private static final float UP_TOP_ANGLE = -30;
 	private static final float UP_BOTTOM_ANGLE = 30;
+	private static final float PLUS_TOP_ANGLE = 46;
+	private static final float PLUS_BOTTOM_ANGLE = 44;
 
 	private static final float TRANSFORMATION_START = 0;
 	private static final float TRANSFORMATION_MID = 1.0f;
@@ -417,6 +448,10 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			// pivotX = (width / 2 + dip3 + diph) * ratio;
 			alpha = (int) ((1 - ratio) * 255);
 			break;
+		case BURGER_PLUS:
+			// fade out
+			alpha = (int) ((1 - ratio) * 255);
+			break;
 		case ARROW_X:
 			// fade out and shorten one end
 			alpha = (int) ((1 - ratio) * 255);
@@ -444,6 +479,11 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			startX += (1 - ratio) * dip2;
 			alpha = (int) ((1 - ratio) * 255);
 			break;
+		case ARROW_PLUS:
+			// fade out and shorten one end
+			alpha = (int) ((1 - ratio) * 255);
+			startX += (1 - ratio) * dip2;
+			break;
 		case X_CHECK:
 			// fade in
 			alpha = (int) (ratio * 255);
@@ -458,6 +498,9 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			alpha = 0;
 			break;
 		case X_DOWN:
+			alpha = 0;
+			break;
+		case X_PLUS:
 			alpha = 0;
 			break;
 		case CHECK_UP:
@@ -482,7 +525,23 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			alpha = (int) ((1 - ratio) * 255);
 
 			break;
+			//TODO
+		case CHECK_PLUS:
+			// rotation to check angle
+			rotation = CHECK_MIDDLE_ANGLE * (1 - ratio);
+			// lengthen both ends
+			startX += (dip4 + dip3 / 2) * (1 - ratio);
+			stopX += dip1 * (1 - ratio);
+			pivotX = (width / 2 + dip3 + diph) * (1 - ratio);
+			// fade out
+			alpha = (int) ((1 - ratio) * 255);
+			
+			break;
 		case UP_DOWN:
+			alpha = 0;
+		case UP_PLUS:
+			alpha = 0;
+		case DOWN_PLUS:
 			alpha = 0;
 			break;
 		default:
@@ -594,6 +653,18 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			// stopX = width / 2;
 			// stopY = height / 3;
 			break;
+		case BURGER_PLUS:
+			// rotate until required angles
+			rotation = X_TOP_LINE_ANGLE * ratio;
+			rotation2 = (X_ROTATION_ANGLE + PLUS_TOP_ANGLE) * ratio;
+
+			// pivot at left corner of line
+			pivotX = sidePadding + dip4;
+			pivotY = topPadding + dip3;
+
+			// shorten one end
+			startX += dip3 * ratio;
+			break;
 		case ARROW_X:
 			// rotate from ARROW angle to X angle
 			rotation = ARROW_BOT_LINE_ANGLE
@@ -650,6 +721,22 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			startX += dip3 * (1 - ratio) - dip3 * ratio;
 
 			break;
+		case ARROW_PLUS:
+			
+			// rotate from ARROW angle to plus angle
+			rotation = ARROW_BOT_LINE_ANGLE
+					+ (X_TOP_LINE_ANGLE - ARROW_BOT_LINE_ANGLE) * ratio;
+			rotation2 = (X_ROTATION_ANGLE+PLUS_TOP_ANGLE) * ratio;
+
+			// move pivot from ARROW pivot to X pivot
+			pivotX = width / 2 + (sidePadding + dip4 - width / 2) * ratio;
+			pivotY = height / 2 + (topPadding + dip3 - height / 2) * ratio;
+
+			// lengthen both ends
+			stopX -= resolveStrokeModifier(ratio);
+			startX += dip3;
+			
+			break;
 		case X_CHECK:
 			// retain X configuration
 			rotation = X_TOP_LINE_ANGLE;
@@ -688,6 +775,20 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 															// stop的-是缩短
 			stopX -= (dip8 + dip2) * ratio; // 注意 start的+是缩短 stop的-是缩短
 
+			break;
+		case X_PLUS:
+			
+			// rotate until required angles
+			rotation = X_TOP_LINE_ANGLE ;
+			rotation2 = X_ROTATION_ANGLE + 45 * ratio;
+
+			// pivot at left corner of line
+			pivotX = sidePadding + dip4;
+			pivotY = topPadding + dip3;
+
+			// shorten one end
+			startX += dip3 ;
+			
 			break;
 		case CHECK_UP:
 			alpha = (int) (ratio * 255);
@@ -733,6 +834,22 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			alpha = (int) (ratio * 255);
 
 			break;
+		case CHECK_PLUS:
+
+			// fade out
+			alpha = (int) (255 * ratio);
+			// rotate until required angles
+			rotation = X_TOP_LINE_ANGLE * ratio;
+			rotation2 = (X_ROTATION_ANGLE + PLUS_TOP_ANGLE) * ratio;
+
+			// pivot at left corner of line
+			pivotX = sidePadding + dip4;
+			pivotY = topPadding + dip3;
+
+			// shorten one end
+			startX += dip3 * ratio;
+
+			break;
 		case UP_DOWN:
 
 			rotation = 180 * ratio;// -30
@@ -752,6 +869,26 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			// startY = height / 3;
 			// stopY = height / 3;
 
+			break;
+		case UP_PLUS:
+			
+			rotation = X_TOP_LINE_ANGLE * ratio;
+			pivotX = (width / 2)*(1-ratio)+(sidePadding + dip4)*ratio;
+			pivotY = (height / 2)*(1-ratio)+(topPadding + dip3)*ratio;
+			rotation2 = UP_TOP_ANGLE * (1-ratio) + (X_ROTATION_ANGLE + PLUS_TOP_ANGLE) * ratio; // 枢纽2已经在线的中点了。。。
+			startX -= dip3 * (1-ratio) - dip3 * ratio; // 注意 start的+是缩短 stop的-是缩短
+			stopX -= (dip8 + dip2) * (1-ratio); // 注意 start的+是缩短 stop的-是缩短
+			
+			break;
+		case DOWN_PLUS:
+			
+			rotation = 180 * (1-ratio)+X_TOP_LINE_ANGLE * ratio;// -30
+			pivotX = (width / 2)*(1-ratio)+(sidePadding + dip4)*ratio;
+			pivotY = (height / 2)*(1-ratio)+(topPadding + dip3)*ratio;
+			rotation2 = UP_TOP_ANGLE * (1-ratio)+(X_ROTATION_ANGLE + PLUS_TOP_ANGLE) * ratio; // 枢纽2已经在线的中点了。。。
+			startX -= dip3 * (1-ratio) - dip3 * ratio; // 注意 start的+是缩短 stop的-是缩短
+			stopX -= (dip8 + dip2) * (1-ratio); // 注意 start的+是缩短 stop的-是缩短
+			
 			break;
 		default:
 			break;
@@ -872,6 +1009,18 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			// stopX = width - 60;
 			// stopY = height / 3;
 			break;
+		case BURGER_PLUS:
+			rotation2 = (X_ROTATION_ANGLE+PLUS_BOTTOM_ANGLE) * ratio;
+			// rotate to required angle
+			rotation = X_BOT_LINE_ANGLE * ratio;
+
+			// pivot left corner of line
+			pivotX = sidePadding + dip4;
+			pivotY = height - topPadding - dip3;
+
+			// shorten one end
+			startX += dip3 * ratio;
+			break;
 		case ARROW_X:
 			// rotate from ARROW angle to X angle
 			rotation = ARROW_TOP_LINE_ANGLE
@@ -934,6 +1083,20 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 					+ (startX - dip3) * ratio;
 
 			break;
+		case ARROW_PLUS:
+			// rotate from ARROW angle to X angle
+			rotation = ARROW_TOP_LINE_ANGLE
+					+ (360 + X_BOT_LINE_ANGLE - ARROW_TOP_LINE_ANGLE) * ratio;
+			rotation2 = (-X_ROTATION_ANGLE+PLUS_BOTTOM_ANGLE) * ratio;
+
+			// move pivot from ARROW pivot to X pivot
+			pivotX = width / 2 + (sidePadding + dip4 - width / 2) * ratio;
+			pivotY = height / 2 + (height / 2 - topPadding - dip3) * ratio;
+
+			// lengthen both ends
+			stopX -= resolveStrokeModifier(ratio);
+			startX += dip3;
+			break;
 		case X_CHECK:
 			// rotate from X to CHECK angles
 			rotation2 = -X_ROTATION_ANGLE * (1 - ratio);
@@ -977,6 +1140,20 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 															// stop的-是缩短
 			stopX -= (dip8 + dip2) * ratio; // 注意 start的+是缩短 stop的-是缩短
 
+			break;
+		case X_PLUS:
+			
+			rotation2 = X_ROTATION_ANGLE + PLUS_BOTTOM_ANGLE * ratio;
+			// rotate to required angle
+			rotation = X_BOT_LINE_ANGLE ;
+
+			// pivot left corner of line
+			pivotX = sidePadding + dip4;
+			pivotY = height - topPadding - dip3;
+
+			// shorten one end
+			startX += dip3 ;
+			
 			break;
 		case CHECK_UP:
 			// 注意 \是bottom 其实就是画条线然后让其旋转到正确的位置
@@ -1024,6 +1201,20 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 					* ratio;
 
 			break;
+		case CHECK_PLUS:
+			
+			rotation = (CHECK_BOTTOM_ANGLE + ARROW_TOP_LINE_ANGLE)*(1-ratio) + X_BOT_LINE_ANGLE * ratio;
+
+			rotation2 = (X_ROTATION_ANGLE+PLUS_BOTTOM_ANGLE) * ratio;
+			// move pivot from BURGER pivot to CHECK pivot
+			pivotX = (width / 2 + dip3)*(1-ratio) + (sidePadding + dip4)*ratio;
+			pivotY = (height / 2 - dip3)*(1-ratio) + (height - topPadding - dip3)*ratio;
+
+			// length stays same as BURGER
+			startX += dip8 * (1-ratio) + dip3 * ratio;
+			stopX -= resolveStrokeModifier(1-ratio);
+						
+			break;
 		case UP_DOWN:
 			// 180度
 			// rotation = 180 - 180 * ratio;//-30
@@ -1053,6 +1244,27 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			// stopX = 600;
 			// stopY = 510;
 			break;
+		case UP_PLUS:
+			rotation = 180 * (1-ratio) + X_BOT_LINE_ANGLE * ratio;
+			pivotX = (width / 2)*(1-ratio) + (sidePadding + dip4)*ratio;// 注意旋转点的选择
+			pivotY = (height / 2)*(1-ratio) + (height - topPadding - dip3)*ratio;
+			rotation2 = UP_BOTTOM_ANGLE * (1-ratio) + (X_ROTATION_ANGLE+PLUS_BOTTOM_ANGLE) * ratio;
+			// 其实就是画条线然后让其旋转到正确的位置
+			startX -= dip3 * (1-ratio) - dip3 * ratio; // 注意 start的+是缩短 stop的-是缩短
+			stopX -= (dip8 + dip2) * (1-ratio); // 注意 start的+是缩短 stop的-是缩短
+			
+			break;
+		case DOWN_PLUS:
+			
+			rotation = X_BOT_LINE_ANGLE * ratio;
+			pivotX = (width / 2)*(1-ratio) + (sidePadding + dip4)*ratio;
+			pivotY = (height / 2)*(1-ratio) + (height - topPadding - dip3)*ratio;
+			rotation2 = UP_BOTTOM_ANGLE * (1-ratio) + (X_ROTATION_ANGLE+PLUS_BOTTOM_ANGLE) * ratio; // 枢纽2已经在线的中点了。。。
+			startX -= dip3 * (1-ratio) - dip3 * ratio; // 注意 start的+是缩短 stop的-是缩短
+			stopX -= (dip8 + dip2) * (1-ratio); // 注意 start的+是缩短 stop的-是缩短
+			
+			break;
+		
 		default:
 			break;
 		}
@@ -1074,7 +1286,9 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			if (animationState == AnimationState.ARROW_X
 					|| animationState == AnimationState.X_CHECK
 					|| animationState == AnimationState.ARROW_UP
-					|| animationState == AnimationState.ARROW_DOWN) {
+					|| animationState == AnimationState.ARROW_DOWN
+					|| animationState == AnimationState.ARROW_PLUS
+					) {
 				return dip3 - (dip3 * ratio);
 			}
 			return ratio * dip3;
@@ -1082,7 +1296,9 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			if (animationState == AnimationState.ARROW_X
 					|| animationState == AnimationState.X_CHECK
 					|| animationState == AnimationState.ARROW_UP
-					|| animationState == AnimationState.ARROW_DOWN) {
+					|| animationState == AnimationState.ARROW_DOWN
+					|| animationState == AnimationState.ARROW_PLUS
+					) {
 				return dip3 + diph - (dip3 + diph) * ratio;
 			}
 			return ratio * (dip3 + diph);
@@ -1090,7 +1306,9 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			if (animationState == AnimationState.ARROW_X
 					|| animationState == AnimationState.X_CHECK
 					|| animationState == AnimationState.ARROW_UP
-					|| animationState == AnimationState.ARROW_DOWN) {
+					|| animationState == AnimationState.ARROW_DOWN
+					|| animationState == AnimationState.ARROW_PLUS
+					) {
 				return dip4 - ((dip3 + dip1) * ratio);
 			}
 			return ratio * dip4;
@@ -1184,6 +1402,10 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 				break;
 			case DOWN:
 				animationState = AnimationState.BURGER_DOWN;
+				transformationValue = TRANSFORMATION_MID;
+				break;
+			case PLUS:                   //注意！！！
+				animationState = AnimationState.BURGER_PLUS;
 				transformationValue = TRANSFORMATION_MID;
 			}
 			currentIconState = iconState;
@@ -1338,12 +1560,14 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 		boolean isCurrentCheck = currentIconState == IconState.CHECK;
 		boolean isCurrentUp = currentIconState == IconState.UP;
 		boolean isCurrentDown = currentIconState == IconState.DOWN;
+		boolean isCurrentPlus = currentIconState == IconState.PLUS;
 		boolean isAnimatingBurger = animatingIconState == IconState.BURGER;
 		boolean isAnimatingArrow = animatingIconState == IconState.ARROW;
 		boolean isAnimatingX = animatingIconState == IconState.X;
 		boolean isAnimatingCheck = animatingIconState == IconState.CHECK;
 		boolean isAnimatingUp = animatingIconState == IconState.UP;
 		boolean isAnimatingDown = animatingIconState == IconState.DOWN;
+		boolean isAnimatingPlus = animatingIconState == IconState.PLUS;
 
 		if ((isCurrentBurger && isAnimatingArrow)
 				|| (isCurrentArrow && isAnimatingBurger)) {
@@ -1374,6 +1598,12 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			animationState = AnimationState.BURGER_DOWN;
 			return isCurrentBurger;
 		}
+		
+		if ((isCurrentBurger && isAnimatingPlus)
+				|| (isCurrentPlus && isAnimatingBurger)) {
+			animationState = AnimationState.BURGER_PLUS;
+			return isCurrentBurger;
+		}
 
 		if ((isCurrentArrow && isAnimatingX)
 				|| (isCurrentX && isAnimatingArrow)) {
@@ -1398,6 +1628,12 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			animationState = AnimationState.ARROW_DOWN;
 			return isCurrentArrow;
 		}
+		
+		if ((isCurrentArrow && isAnimatingPlus)
+				|| (isCurrentPlus && isAnimatingArrow)) {
+			animationState = AnimationState.ARROW_PLUS;
+			return isCurrentArrow;
+		}
 
 		if ((isCurrentX && isAnimatingCheck)
 				|| (isCurrentCheck && isAnimatingX)) {
@@ -1414,35 +1650,44 @@ public class MaterialMenuDrawable extends Drawable implements Animatable {
 			animationState = AnimationState.X_DOWN;
 			return isCurrentX;
 		}
+		
+		if ((isCurrentX && isAnimatingPlus) || (isCurrentPlus && isAnimatingX)) {
+			animationState = AnimationState.X_PLUS;
+			return isCurrentX;
+		}
 
 		if ((isCurrentCheck && isAnimatingUp)
 				|| (isCurrentUp && isAnimatingCheck)) {
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isCurrentCheck:"+isCurrentCheck);
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isAnimatingUp:"+isAnimatingUp);
 			animationState = AnimationState.CHECK_UP;
 			return isCurrentCheck;
 		}
 
 		if ((isCurrentCheck && isAnimatingDown)
 				|| (isCurrentDown && isAnimatingCheck)) {
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isCurrentCheck:"+isCurrentCheck);
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isAnimatingDown:"+isAnimatingDown);
 			animationState = AnimationState.CHECK_DOWN;
+			return isCurrentCheck;
+		}
+		
+		if ((isCurrentCheck && isAnimatingPlus)
+				|| (isCurrentPlus && isAnimatingCheck)) {
+			animationState = AnimationState.CHECK_PLUS;
 			return isCurrentCheck;
 		}
 
 		if ((isCurrentUp && isAnimatingDown)
 				|| (isCurrentDown && isAnimatingUp)) {
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isCurrentUp:"+isCurrentUp);
-			// Log.i("LHF",
-			// "isCurrentUp.resolveTransformation.isAnimatingDown:"+isAnimatingDown);
 			animationState = AnimationState.UP_DOWN;
 			return isCurrentUp;
+		}
+		if ((isCurrentUp && isAnimatingPlus)
+				|| (isCurrentPlus && isAnimatingUp)) {
+			animationState = AnimationState.UP_PLUS;
+			return isCurrentUp;
+		}
+		if ((isCurrentDown && isAnimatingPlus)
+				|| (isCurrentPlus && isAnimatingDown)) {
+			animationState = AnimationState.DOWN_PLUS;
+			return isCurrentDown;        //注意！！！
 		}
 
 		throw new IllegalStateException(String.format(

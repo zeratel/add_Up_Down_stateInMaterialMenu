@@ -1,13 +1,13 @@
 # add_Up_Down_stateInMaterialMenu
+
 在别的大神基础上修改而成，原作请见[balysv/material-menu][1]
-</r></n>给MaterialMenu加入了向上的箭头，向下的箭头，加号
+
 
 <p align="center">
   <img src="art/materialMenu.gif" />
 </p>
 
-</r></n>加入:一个是向上的箭头，一个是向下的箭头，可以在展开的时候使用，eclipse版，nineOld已经加入
-
+给MaterialMenu加入了向上的箭头，向下的箭头，加号，eclipse版
 
 License
 -----------

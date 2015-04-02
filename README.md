@@ -3,7 +3,7 @@
 给MaterialMenu加入了向上的箭头，向下的箭头，加号
 
 <p align="center">
-  <img src="art/mm.gif" />
+  <img src="art/materialMenu.gif" />
 </p>
 
 加入，一个是向上的箭头，一个是向下的箭头，可以在展开的时候使用，eclipse版，nineOld已经加入
